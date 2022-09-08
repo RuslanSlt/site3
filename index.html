@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="src/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="src/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="src/favicon-16x16.png">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://unpkg.com/lightweight-charts@3.7.0/dist/lightweight-charts.standalone.development.js"></script>
+    <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+
+    <title id="title">📈 Trading Chart | </title>
+
+</head>
+
+<style media="screen">
+    .token-statistics {
+        margin-left: -10px;
+        border: 3px solid #00A6FA;
+        width: calc(100% + 20px);
+        border-radius: 20px;
+        padding: 5px;
+    }
+</style>
+
+<body>
+    <div class="left-sidebar">
+        <div class="token-statistics">
+            <div>
+                <div>Total Supply</div>
+                <div id="supply">100,000,000</div>
+            </div>
+            <div>
+                <div>Market Cap</div>
+                <div data-external="market_cap"></div>
+            </div>
+            <!-- <div>
+              <div>Holdings BNB</div>
+              <div data-external="holding">not avaliable</div>
+            </div> -->
+            <div class="bg-green-10">
+                <div class="green-75">Trust Rating</div>
+                <div class="green-text" id="trustRating" >95.4%</div>
+            </div>
+            <div class="bg-green-10">
+                <div class="green-75">Community Trust</div>
+                <div class="green-text com-trust" id="communityTrust">93.7%</div>
+            </div>
+            <div>
+                <div>Project insured</div>
+                <div id="projectInsured1">$25,000,000</div>
+            </div>
+        </div>
+        <a class="btn btn-pc" target="_blank" id="buy2" href="https://pancakeswap.finance/swap?outputCurrency=">
+            Купить
+            <svg class="swap-svg" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.50003 5C8.23481 5 7.98046 5.10536 7.79292 5.2929C7.60539 5.48043 7.50003 5.73479 7.50003 6C7.50003 6.26522 7.60539 6.51958 7.79292 6.70711C7.98046 6.89465 8.23481 7 8.50003 7H14.086L12.793 8.293C12.6109 8.48161 12.5101 8.73421 12.5124 8.99641C12.5146 9.2586 12.6198 9.50942 12.8052 9.69482C12.9906 9.88023 13.2414 9.9854 13.5036 9.98768C13.7658 9.98996 14.0184 9.88916 14.207 9.707L17.207 6.707C17.3945 6.51948 17.4998 6.26517 17.4998 6C17.4998 5.73484 17.3945 5.48053 17.207 5.293L14.207 2.293C14.1148 2.19749 14.0044 2.12131 13.8824 2.0689C13.7604 2.01649 13.6292 1.98891 13.4964 1.98775C13.3637 1.9866 13.232 2.0119 13.1091 2.06218C12.9862 2.11246 12.8745 2.18672 12.7806 2.28061C12.6867 2.3745 12.6125 2.48615 12.5622 2.60905C12.5119 2.73195 12.4866 2.86363 12.4878 2.99641C12.4889 3.12919 12.5165 3.26041 12.5689 3.38241C12.6213 3.50441 12.6975 3.61476 12.793 3.707L14.086 5H8.50003ZM12.5 15C12.7652 15 13.0196 14.8946 13.2071 14.7071C13.3947 14.5196 13.5 14.2652 13.5 14C13.5 13.7348 13.3947 13.4804 13.2071 13.2929C13.0196 13.1054 12.7652 13 12.5 13H6.91403L8.20703 11.707C8.30254 11.6148 8.37872 11.5044 8.43113 11.3824C8.48354 11.2604 8.51113 11.1292 8.51228 10.9964C8.51344 10.8636 8.48813 10.7319 8.43785 10.6091C8.38757 10.4862 8.31332 10.3745 8.21943 10.2806C8.12553 10.1867 8.01388 10.1125 7.89098 10.0622C7.76809 10.0119 7.63641 9.9866 7.50363 9.98775C7.37085 9.98891 7.23963 10.0165 7.11763 10.0689C6.99562 10.1213 6.88528 10.1975 6.79303 10.293L3.79303 13.293C3.60556 13.4805 3.50024 13.7348 3.50024 14C3.50024 14.2652 3.60556 14.5195 3.79303 14.707L6.79303 17.707C6.98163 17.8892 7.23424 17.99 7.49643 17.9877C7.75863 17.9854 8.00944 17.8802 8.19485 17.6948C8.38026 17.5094 8.48543 17.2586 8.4877 16.9964C8.48998 16.7342 8.38919 16.4816 8.20703 16.293L6.91403 15H12.5Z" fill="black" />
+            </svg>
+        </a>
+        <div class="benefit-block project-growth mobile-hide">
+            <svg class="growth-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_230_793)">
+                    <rect width="48" height="48" rx="24" fill="#31E981" fill-opacity="0.1" />
+                    <g filter="url(#filter0_ddd_230_793)">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 13C13.1022 13 12.7206 13.158 12.4393 13.4393C12.158 13.7206 12 14.1022 12 14.5C12 14.8978 12.158 15.2794 12.4393 15.5607C12.7206 15.842 13.1022 16 13.5 16V28C13.5 28.7956 13.8161 29.5587 14.3787 30.1213C14.9413 30.6839 15.7044 31 16.5 31H20.379L18.4395 32.9395C18.2962 33.0779 18.182 33.2434 18.1033 33.4264C18.0247 33.6094 17.9834 33.8062 17.9816 34.0054C17.9799 34.2046 18.0178 34.4021 18.0933 34.5864C18.1687 34.7708 18.2801 34.9383 18.4209 35.0791C18.5617 35.2199 18.7292 35.3313 18.9136 35.4067C19.0979 35.4822 19.2954 35.5201 19.4946 35.5184C19.6938 35.5166 19.8906 35.4753 20.0736 35.3966C20.2566 35.318 20.4221 35.2038 20.5605 35.0605L24 31.621L27.4395 35.0605C27.7224 35.3337 28.1013 35.4849 28.4946 35.4815C28.8879 35.4781 29.2641 35.3203 29.5422 35.0422C29.8203 34.7641 29.9781 34.3879 29.9815 33.9946C29.9849 33.6013 29.8337 33.2224 29.5605 32.9395L27.621 31H31.5C32.2956 31 33.0587 30.6839 33.6213 30.1213C34.1839 29.5587 34.5 28.7956 34.5 28V16C34.8978 16 35.2794 15.842 35.5607 15.5607C35.842 15.2794 36 14.8978 36 14.5C36 14.1022 35.842 13.7206 35.5607 13.4393C35.2794 13.158 34.8978 13 34.5 13H13.5ZM31.0605 20.0605C31.3337 19.7776 31.4849 19.3987 31.4815 19.0054C31.4781 18.6121 31.3203 18.2359 31.0422 17.9578C30.7641 17.6797 30.3879 17.5219 29.9946 17.5185C29.6013 17.5151 29.2224 17.6663 28.9395 17.9395L24 22.879L22.0605 20.9395C21.7792 20.6583 21.3977 20.5003 21 20.5003C20.6023 20.5003 20.2208 20.6583 19.9395 20.9395L16.9395 23.9395C16.7962 24.0779 16.682 24.2434 16.6033 24.4264C16.5247 24.6094 16.4834 24.8062 16.4816 25.0054C16.4799 25.2046 16.5178 25.4021 16.5933 25.5864C16.6687 25.7708 16.7801 25.9383 16.9209 26.0791C17.0617 26.2199 17.2292 26.3313 17.4136 26.4067C17.5979 26.4822 17.7954 26.5201 17.9946 26.5184C18.1938 26.5166 18.3906 26.4753 18.5736 26.3967C18.7566 26.318 18.9221 26.2038 19.0605 26.0605L21 24.121L22.9395 26.0605C23.2208 26.3417 23.6023 26.4997 24 26.4997C24.3977 26.4997 24.7792 26.3417 25.0605 26.0605L31.0605 20.0605V20.0605Z" fill="#31E981" />
+                    </g>
+                </g>
+                <defs>
+                    <filter id="filter0_ddd_230_793" x="-8" y="3" width="64" height="62.5184" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset />
+                        <feGaussianBlur stdDeviation="0.5" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0" />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_230_793" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dy="2" />
+                        <feGaussianBlur stdDeviation="3" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.12 0" />
+                        <feBlend mode="normal" in2="effect1_dropShadow_230_793" result="effect2_dropShadow_230_793" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dy="10" />
+                        <feGaussianBlur stdDeviation="10" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.18 0" />
+                        <feBlend mode="normal" in2="effect2_dropShadow_230_793" result="effect3_dropShadow_230_793" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_230_793" result="shape" />
+                    </filter>
+                    <clipPath id="clip0_230_793">
+                        <rect width="48" height="48" rx="24" fill="white" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <div>
+                <div class="title3" id="growthPotential">2550%</div>
+                <p>минимальный потенциал роста до листинга</p>
+            </div>
+        </div>
+        <div class="benefit-block insurance mobile-hide">
+            <svg class="insurance-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_230_802)">
+                    <rect width="48" height="48" rx="24" fill="#31E981" fill-opacity="0.1" />
+                    <g filter="url(#filter0_ddd_230_802)">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2433 16.4778C16.4868 16.4251 20.567 14.8339 23.7259 12C26.8846 14.8345 30.9648 16.4261 35.2085 16.4793C35.3697 17.432 35.4518 18.4141 35.4518 19.4122C35.4518 27.0707 30.5562 33.5859 23.7259 36C16.8956 33.5845 12 27.0693 12 19.4108C12 18.4111 12.0835 17.432 12.2433 16.4778ZM29.1594 21.9128C29.4264 21.6363 29.5741 21.2661 29.5708 20.8818C29.5675 20.4975 29.4133 20.1298 29.1415 19.8581C28.8698 19.5863 28.5022 19.4322 28.1178 19.4288C27.7335 19.4255 27.3633 19.5732 27.0868 19.8402L22.2602 24.6669L20.365 22.7717C20.0885 22.5047 19.7183 22.357 19.334 22.3603C18.9497 22.3637 18.582 22.5178 18.3103 22.7896C18.0385 23.0613 17.8844 23.429 17.881 23.8133C17.8777 24.1976 18.0254 24.5678 18.2924 24.8443L21.2239 27.7757C21.4988 28.0505 21.8715 28.2049 22.2602 28.2049C22.6488 28.2049 23.0216 28.0505 23.2964 27.7757L29.1594 21.9128Z" fill="#31E981" />
+                    </g>
+                </g>
+                <defs>
+                    <filter id="filter0_ddd_230_802" x="-8" y="2" width="63.4518" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset />
+                        <feGaussianBlur stdDeviation="0.5" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0" />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_230_802" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dy="2" />
+                        <feGaussianBlur stdDeviation="3" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.12 0" />
+                        <feBlend mode="normal" in2="effect1_dropShadow_230_802" result="effect2_dropShadow_230_802" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dy="10" />
+                        <feGaussianBlur stdDeviation="10" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.18 0" />
+                        <feBlend mode="normal" in2="effect2_dropShadow_230_802" result="effect3_dropShadow_230_802" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_230_802" result="shape" />
+                    </filter>
+                    <clipPath id="clip0_230_802">
+                        <rect width="48" height="48" rx="24" fill="white" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <div>
+                <div class="title3">Проект застрахован на <span class="project-insured-qty" id="projectInsured2">$25,000,000</span></div>
+                <p>максимальный уровень надёжности</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="center">
+        <div class="token-quotation">
+            <div>
+                <div class="token-info-container">
+                    <div class="logo">
+                        <img id="logoImg" src="src/itm-logo.svg">
+                    </div>
+                    <div>
+                        <div class="token-name" id="tokenName">ITM</div>
+                        <div class="small-text white-50" id="copy">
+                            <span class="small-text white-50" id="tokenLabel">0x595fF1Af1ed10855C036F1BC0Ef8489801Dfb089</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="token-price">
+                    <div class="current">
+                        <div class="day-change-container plus">
+                            <span id="day-change" data-external="last_price">
+                                <svg width="83" height="15" viewBox="0 0 83 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="0.5" y="0.5" width="82" height="14" rx="7" fill="#E6E6E6" />
+                                </svg>
+                            </span>
+                            <svg class="up up-svg" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_230_623)">
+                                    <rect x="0.5" y="0.5" width="24" height="24" rx="12" fill="#31E981" fill-opacity="0.1" />
+                                    <g filter="url(#filter0_ddd_230_623)">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.9965 10.2529C13.7975 10.2529 13.6065 10.1738 13.4658 10.033C13.325 9.89226 13.2459 9.70135 13.2459 9.50229C13.2459 9.30322 13.325 9.11231 13.4658 8.97155C13.6065 8.83079 13.7975 8.75171 13.9965 8.75171H17.7494C17.9485 8.75171 18.1394 8.83079 18.2801 8.97155C18.4209 9.11231 18.5 9.30322 18.5 9.50229V13.2552C18.5 13.4542 18.4209 13.6451 18.2801 13.7859C18.1394 13.9267 17.9485 14.0057 17.7494 14.0057C17.5503 14.0057 17.3594 13.9267 17.2187 13.7859C17.0779 13.6451 16.9988 13.4542 16.9988 13.2552V11.3142L13.7766 14.5364C13.6359 14.6771 13.445 14.7562 13.2459 14.7562C13.0469 14.7562 12.856 14.6771 12.7153 14.5364L10.9942 12.8153L7.772 16.0376C7.63044 16.1743 7.44084 16.2499 7.24404 16.2482C7.04724 16.2465 6.85899 16.1676 6.71982 16.0284C6.58066 15.8892 6.50172 15.701 6.50001 15.5042C6.4983 15.3074 6.57396 15.1178 6.71068 14.9762L10.4636 11.2234C10.6043 11.0826 10.7952 11.0036 10.9942 11.0036C11.1932 11.0036 11.3841 11.0826 11.5249 11.2234L13.2459 12.9444L15.9375 10.2529H13.9965Z" fill="#31E981" />
+                                    </g>
+                                </g>
+                                <defs>
+                                    <filter id="filter0_ddd_230_623" x="-1.50002" y="4.75171" width="28" height="23.4966" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset />
+                                        <feGaussianBlur stdDeviation="0.5" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0" />
+                                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_230_623" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset />
+                                        <feGaussianBlur stdDeviation="1" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.12 0" />
+                                        <feBlend mode="normal" in2="effect1_dropShadow_230_623" result="effect2_dropShadow_230_623" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset dy="4" />
+                                        <feGaussianBlur stdDeviation="4" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.18 0" />
+                                        <feBlend mode="normal" in2="effect2_dropShadow_230_623" result="effect3_dropShadow_230_623" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_230_623" result="shape" />
+                                    </filter>
+                                    <clipPath id="clip0_230_623">
+                                        <rect x="0.5" y="0.5" width="24" height="24" rx="12" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <svg class="down down-svg" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_230_623)">
+                                    <rect x="0.5" y="0.5" width="24" height="24" rx="12" fill="#FF674D" fill-opacity="0.1" />
+                                    <g filter="url(#filter0_ddd_230_623)">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.9965 14.7471C13.7975 14.7471 13.6065 14.8262 13.4658 14.9669C13.325 15.1077 13.2459 15.2986 13.2459 15.4977C13.2459 15.6967 13.325 15.8877 13.4658 16.0284C13.6065 16.1692 13.7975 16.2483 13.9965 16.2483H17.7494C17.9485 16.2483 18.1394 16.1692 18.2801 16.0284C18.4209 15.8877 18.5 15.6967 18.5 15.4977V11.7448C18.5 11.5457 18.4209 11.3548 18.2801 11.2141C18.1394 11.0733 17.9485 10.9942 17.7494 10.9942C17.5503 10.9942 17.3594 11.0733 17.2187 11.2141C17.0779 11.3548 16.9988 11.5457 16.9988 11.7448V13.6858L13.7766 10.4636C13.6359 10.3229 13.445 10.2438 13.2459 10.2438C13.0469 10.2438 12.856 10.3229 12.7153 10.4636L10.9942 12.1846L7.772 8.96242C7.63044 8.82569 7.44084 8.75004 7.24404 8.75175C7.04724 8.75346 6.85899 8.8324 6.71982 8.97156C6.58066 9.11072 6.50172 9.29898 6.50001 9.49577C6.4983 9.69257 6.57396 9.88217 6.71068 10.0237L10.4636 13.7766C10.6043 13.9173 10.7952 13.9964 10.9942 13.9964C11.1932 13.9964 11.3841 13.9173 11.5249 13.7766L13.2459 12.0555L15.9375 14.7471H13.9965Z" fill="#FF674D" />
+                                    </g>
+                                </g>
+                                <defs>
+                                    <filter id="filter0_ddd_230_623" x="-1.50002" y="4.75171" width="28" height="23.4966" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset />
+                                        <feGaussianBlur stdDeviation="0.5" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0" />
+                                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_230_623" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset />
+                                        <feGaussianBlur stdDeviation="1" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.403922 0 0 0 0 0.301961 0 0 0 0.12 0" />
+                                        <feBlend mode="normal" in2="effect1_dropShadow_230_623" result="effect2_dropShadow_230_623" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset dy="4" />
+                                        <feGaussianBlur stdDeviation="4" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.403922 0 0 0 0 0.301961 0 0 0 0.18 0" />
+                                        <feBlend mode="normal" in2="effect2_dropShadow_230_623" result="effect3_dropShadow_230_623" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_230_623" result="shape" />
+                                    </filter>
+                                    <clipPath id="clip0_230_623">
+                                        <rect x="0.5" y="0.5" width="24" height="24" rx="12" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div id="current" data-external="cur_price">
+                            <svg width="129" height="21" viewBox="0 0 129 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect y="0.875" width="129" height="19.25" rx="9.625" fill="white" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="day">
+                        <div class="white-50 text-14">за последние 24 часа</div>
+                        <div id="day-change-percent" class="text-14 bold plus" data-external="change_price"></div>
+                    </div>
+                </div>
+            </div>
+            <div id=chart_container>
+                <div class=tfs>
+                    <div class="tf" data-tf=1>1m</div>
+                    <div class="tf" data-tf=3>3m</div>
+                    <div class="tf active" data-tf=5>5m</div>
+                    <div class="tf" data-tf=15>15m</div>
+                    <div class="tf" data-tf=30>30m</div>
+                    <div class="tf" data-tf=60>1h</div>
+                </div>
+                <div id="chart">
+                    <div id="chart_overlay"><span id="pairName"></span>, <span>5M</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="recent-transactions mobile-hide">
+            <div class="top">
+                <div class="tabs">
+                    <div class="bold active all-operation-tab">Все операции</div>
+                    <div class="bold buy-operation-tab">Покупки</div>
+                    <div class="bold sell-operation-tab">Продажи</div>
+                </div>
+                <div class="text-14 white-50">Последние 50 операций</div>
+            </div>
+            <div class="table-container">
+                <div class="table">
+                    <div class="table-title">
+                        <div>Кол-во</div>
+                        <div>Сумма</div>
+                        <div>Цена</div>
+                        <div>Время</div>
+                        <div>Tx</div>
+                    </div>
+                    <div class="table-items all">
+                    </div>
+                    <div class="table-items buy">
+                    </div>
+                    <div class="table-items sell">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="benefit-block project-growth pc-hide">
+            <svg class="growth-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_230_793)">
+                    <rect width="48" height="48" rx="24" fill="#31E981" fill-opacity="0.1" />
+                    <g filter="url(#filter0_ddd_230_793)">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 13C13.1022 13 12.7206 13.158 12.4393 13.4393C12.158 13.7206 12 14.1022 12 14.5C12 14.8978 12.158 15.2794 12.4393 15.5607C12.7206 15.842 13.1022 16 13.5 16V28C13.5 28.7956 13.8161 29.5587 14.3787 30.1213C14.9413 30.6839 15.7044 31 16.5 31H20.379L18.4395 32.9395C18.2962 33.0779 18.182 33.2434 18.1033 33.4264C18.0247 33.6094 17.9834 33.8062 17.9816 34.0054C17.9799 34.2046 18.0178 34.4021 18.0933 34.5864C18.1687 34.7708 18.2801 34.9383 18.4209 35.0791C18.5617 35.2199 18.7292 35.3313 18.9136 35.4067C19.0979 35.4822 19.2954 35.5201 19.4946 35.5184C19.6938 35.5166 19.8906 35.4753 20.0736 35.3966C20.2566 35.318 20.4221 35.2038 20.5605 35.0605L24 31.621L27.4395 35.0605C27.7224 35.3337 28.1013 35.4849 28.4946 35.4815C28.8879 35.4781 29.2641 35.3203 29.5422 35.0422C29.8203 34.7641 29.9781 34.3879 29.9815 33.9946C29.9849 33.6013 29.8337 33.2224 29.5605 32.9395L27.621 31H31.5C32.2956 31 33.0587 30.6839 33.6213 30.1213C34.1839 29.5587 34.5 28.7956 34.5 28V16C34.8978 16 35.2794 15.842 35.5607 15.5607C35.842 15.2794 36 14.8978 36 14.5C36 14.1022 35.842 13.7206 35.5607 13.4393C35.2794 13.158 34.8978 13 34.5 13H13.5ZM31.0605 20.0605C31.3337 19.7776 31.4849 19.3987 31.4815 19.0054C31.4781 18.6121 31.3203 18.2359 31.0422 17.9578C30.7641 17.6797 30.3879 17.5219 29.9946 17.5185C29.6013 17.5151 29.2224 17.6663 28.9395 17.9395L24 22.879L22.0605 20.9395C21.7792 20.6583 21.3977 20.5003 21 20.5003C20.6023 20.5003 20.2208 20.6583 19.9395 20.9395L16.9395 23.9395C16.7962 24.0779 16.682 24.2434 16.6033 24.4264C16.5247 24.6094 16.4834 24.8062 16.4816 25.0054C16.4799 25.2046 16.5178 25.4021 16.5933 25.5864C16.6687 25.7708 16.7801 25.9383 16.9209 26.0791C17.0617 26.2199 17.2292 26.3313 17.4136 26.4067C17.5979 26.4822 17.7954 26.5201 17.9946 26.5184C18.1938 26.5166 18.3906 26.4753 18.5736 26.3967C18.7566 26.318 18.9221 26.2038 19.0605 26.0605L21 24.121L22.9395 26.0605C23.2208 26.3417 23.6023 26.4997 24 26.4997C24.3977 26.4997 24.7792 26.3417 25.0605 26.0605L31.0605 20.0605V20.0605Z" fill="#31E981" />
+                    </g>
+                </g>
+                <defs>
+                    <filter id="filter0_ddd_230_793" x="-8" y="3" width="64" height="62.5184" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset />
+                        <feGaussianBlur stdDeviation="0.5" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0" />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_230_793" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dy="2" />
+                        <feGaussianBlur stdDeviation="3" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.12 0" />
+                        <feBlend mode="normal" in2="effect1_dropShadow_230_793" result="effect2_dropShadow_230_793" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dy="10" />
+                        <feGaussianBlur stdDeviation="10" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.18 0" />
+                        <feBlend mode="normal" in2="effect2_dropShadow_230_793" result="effect3_dropShadow_230_793" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_230_793" result="shape" />
+                    </filter>
+                    <clipPath id="clip0_230_793">
+                        <rect width="48" height="48" rx="24" fill="white" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <div>
+                <div class="title3" id="growthPotential1">2550%</div>
+                <p>минимальный потенциал роста до листинга</p>
+            </div>
+        </div>
+        <div class="benefit-block insurance pc-hide">
+            <svg class="insurance-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_230_802)">
+                    <rect width="48" height="48" rx="24" fill="#31E981" fill-opacity="0.1" />
+                    <g filter="url(#filter0_ddd_230_802)">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2433 16.4778C16.4868 16.4251 20.567 14.8339 23.7259 12C26.8846 14.8345 30.9648 16.4261 35.2085 16.4793C35.3697 17.432 35.4518 18.4141 35.4518 19.4122C35.4518 27.0707 30.5562 33.5859 23.7259 36C16.8956 33.5845 12 27.0693 12 19.4108C12 18.4111 12.0835 17.432 12.2433 16.4778ZM29.1594 21.9128C29.4264 21.6363 29.5741 21.2661 29.5708 20.8818C29.5675 20.4975 29.4133 20.1298 29.1415 19.8581C28.8698 19.5863 28.5022 19.4322 28.1178 19.4288C27.7335 19.4255 27.3633 19.5732 27.0868 19.8402L22.2602 24.6669L20.365 22.7717C20.0885 22.5047 19.7183 22.357 19.334 22.3603C18.9497 22.3637 18.582 22.5178 18.3103 22.7896C18.0385 23.0613 17.8844 23.429 17.881 23.8133C17.8777 24.1976 18.0254 24.5678 18.2924 24.8443L21.2239 27.7757C21.4988 28.0505 21.8715 28.2049 22.2602 28.2049C22.6488 28.2049 23.0216 28.0505 23.2964 27.7757L29.1594 21.9128Z" fill="#31E981" />
+                    </g>
+                </g>
+                <defs>
+                    <filter id="filter0_ddd_230_802" x="-8" y="2" width="63.4518" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset />
+                        <feGaussianBlur stdDeviation="0.5" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0" />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_230_802" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dy="2" />
+                        <feGaussianBlur stdDeviation="3" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.12 0" />
+                        <feBlend mode="normal" in2="effect1_dropShadow_230_802" result="effect2_dropShadow_230_802" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dy="10" />
+                        <feGaussianBlur stdDeviation="10" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.18 0" />
+                        <feBlend mode="normal" in2="effect2_dropShadow_230_802" result="effect3_dropShadow_230_802" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_230_802" result="shape" />
+                    </filter>
+                    <clipPath id="clip0_230_802">
+                        <rect width="48" height="48" rx="24" fill="white" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <div>
+                <div class="title3" >Проект застрахован на <span id="projectInsured">$25,000,000</span></div>
+                <p>максимальный уровень надёжности</p>
+            </div>
+        </div>
+    </div>
+
+   <!-- <div class="right-sidebar"> 
+        <div class="container right-sidebar-start">
+            <div class="statistics-container">
+                <div class="experts-rating">
+                    <div class="text-block">
+                        <div class="block-title">Рейтинг от экспертов</div>
+                        <p class="small-text">Составлен на основе информации о транзакциях, держателях, создателях и пулах</p>
+                    </div>
+                    <img id="expertsImg" class="experts" src="src/experts.svg">
+                </div>
+                <div class="community-trust">
+                    <div class="block-title">Доверие комьюнити</div>
+                    <div class="cont">
+                        <img id="trustImg" class="trust-svg" alt="#" src="/src/trust.svg">
+                        <img id="trustImgPlus" class="plus1" src="src/trust-plus1.png">
+                        <img id="trustImgMinus" class="minus1" src="src/trust-minus1.png">
+                    </div>
+                </div>
+                <div class="rate">
+                    <div>Ваша оценка:</div>
+                    <div class="rate-btns">
+                        <svg class="dis" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_230_711)">
+                                <rect width="40" height="40" rx="20" fill="#FF674D" fill-opacity="0.1" />
+                                <g filter="url(#filter0_ddd_230_711)">
+                                    <path d="M27.7804 20.5C27.7804 20.8978 27.6224 21.2794 27.3411 21.5607C27.0598 21.842 26.6782 22 26.2804 22C25.8826 22 25.501 21.842 25.2197 21.5607C24.9384 21.2794 24.7804 20.8978 24.7804 20.5V14.5C24.7804 14.1022 24.9384 13.7206 25.2197 13.4393C25.501 13.158 25.8826 13 26.2804 13C26.6782 13 27.0598 13.158 27.3411 13.4393C27.6224 13.7206 27.7804 14.1022 27.7804 14.5V20.5ZM23.7804 20.667V15.237C23.7807 14.8654 23.6774 14.5012 23.4822 14.185C23.2871 13.8688 23.0077 13.6133 22.6754 13.447L22.6254 13.422C22.0696 13.1442 21.4567 12.9997 20.8354 13H15.4204C14.9579 12.9998 14.5096 13.16 14.1518 13.4531C13.7941 13.7463 13.5491 14.1544 13.4584 14.608L12.2584 20.608C12.2004 20.8982 12.2075 21.1977 12.2793 21.4848C12.351 21.7719 12.4856 22.0396 12.6732 22.2684C12.8609 22.4972 13.0971 22.6815 13.3646 22.808C13.6322 22.9346 13.9244 23.0001 14.2204 23H17.7804V27C17.7804 27.5304 17.9911 28.0391 18.3662 28.4142C18.7413 28.7893 19.25 29 19.7804 29C20.0456 29 20.3 28.8946 20.4875 28.7071C20.675 28.5196 20.7804 28.2652 20.7804 28V27.333C20.7804 26.4675 21.0611 25.6254 21.5804 24.933L22.9804 23.067C23.4997 22.3746 23.7804 21.5325 23.7804 20.667V20.667Z" fill="#FF674D" />
+                                </g>
+                            </g>
+                            <defs>
+                                <filter id="filter0_ddd_230_711" x="4.2196" y="9" width="31.5608" height="32" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                    <feOffset />
+                                    <feGaussianBlur stdDeviation="0.5" />
+                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0" />
+                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_230_711" />
+                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                    <feOffset />
+                                    <feGaussianBlur stdDeviation="1" />
+                                    <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.403922 0 0 0 0 0.301961 0 0 0 0.12 0" />
+                                    <feBlend mode="normal" in2="effect1_dropShadow_230_711" result="effect2_dropShadow_230_711" />
+                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                    <feOffset dy="4" />
+                                    <feGaussianBlur stdDeviation="4" />
+                                    <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.403922 0 0 0 0 0.301961 0 0 0 0.18 0" />
+                                    <feBlend mode="normal" in2="effect2_dropShadow_230_711" result="effect3_dropShadow_230_711" />
+                                    <feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_230_711" result="shape" />
+                                </filter>
+                                <clipPath id="clip0_230_711">
+                                    <rect width="40" height="40" rx="20" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        <svg class="like" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="20" fill="#31E981" fill-opacity="0.1" />
+                            <g filter="url(#filter0_ddd_230_713)">
+                                <path d="M12 19.5C12 19.303 12.0388 19.108 12.1142 18.926C12.1896 18.744 12.3001 18.5786 12.4393 18.4393C12.5786 18.3001 12.744 18.1896 12.926 18.1142C13.108 18.0388 13.303 18 13.5 18C13.697 18 13.892 18.0388 14.074 18.1142C14.256 18.1896 14.4214 18.3001 14.5607 18.4393C14.6999 18.5786 14.8104 18.744 14.8858 18.926C14.9612 19.108 15 19.303 15 19.5V25.5C15 25.8978 14.842 26.2794 14.5607 26.5607C14.2794 26.842 13.8978 27 13.5 27C13.1022 27 12.7206 26.842 12.4393 26.5607C12.158 26.2794 12 25.8978 12 25.5V19.5ZM16 19.333V24.763C15.9998 25.1347 16.1032 25.499 16.2986 25.8152C16.4939 26.1314 16.7735 26.3869 17.106 26.553L17.156 26.578C17.7109 26.8553 18.3227 26.9998 18.943 27H24.359C24.8215 27.0002 25.2698 26.84 25.6276 26.5469C25.9853 26.2537 26.2303 25.8456 26.321 25.392L27.521 19.392C27.579 19.1019 27.5719 18.8025 27.5002 18.5154C27.4285 18.2284 27.294 17.9608 27.1065 17.732C26.9189 17.5032 26.6829 17.3189 26.4155 17.1923C26.148 17.0657 25.8559 17 25.56 17H22V13C22 12.4696 21.7893 11.9609 21.4142 11.5858C21.0391 11.2107 20.5304 11 20 11C19.7348 11 19.4804 11.1054 19.2929 11.2929C19.1054 11.4804 19 11.7348 19 12V12.667C19 13.5325 18.7193 14.3746 18.2 15.067L16.8 16.933C16.2807 17.6254 16 18.4675 16 19.333V19.333Z" fill="#31E981" />
+                            </g>
+                            <defs>
+                                <filter id="filter0_ddd_230_713" x="4" y="7" width="31.5598" height="32" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                    <feOffset />
+                                    <feGaussianBlur stdDeviation="0.5" />
+                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0" />
+                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_230_713" />
+                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                    <feOffset />
+                                    <feGaussianBlur stdDeviation="1" />
+                                    <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.12 0" />
+                                    <feBlend mode="normal" in2="effect1_dropShadow_230_713" result="effect2_dropShadow_230_713" />
+                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                    <feOffset dy="4" />
+                                    <feGaussianBlur stdDeviation="4" />
+                                    <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.18 0" />
+                                    <feBlend mode="normal" in2="effect2_dropShadow_230_713" result="effect3_dropShadow_230_713" />
+                                    <feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_230_713" result="shape" />
+                                </filter>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+                <div class="index-of-fear-and-greed">
+                    <div class="block-title">Индекс страха и жадности</div>
+                    <img id="fearAndGreedImg" class="fear-and-greed-svg" src="src/fear-and-greed.svg">
+                    <div class="text-block">
+                        <p>Валюта недооценена —<br>время покупать!</p>
+                        <div class="small-text">Рекомендация от «Trading Chart»</div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="rate mobile-hide">
+              <div>Ваша оценка:</div>
+              <div class="rate-btns">
+              <svg class="dis" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_230_711)">
+                <rect width="40" height="40" rx="20" fill="#FF674D" fill-opacity="0.1"/>
+                <g filter="url(#filter0_ddd_230_711)">
+                <path d="M27.7804 20.5C27.7804 20.8978 27.6224 21.2794 27.3411 21.5607C27.0598 21.842 26.6782 22 26.2804 22C25.8826 22 25.501 21.842 25.2197 21.5607C24.9384 21.2794 24.7804 20.8978 24.7804 20.5V14.5C24.7804 14.1022 24.9384 13.7206 25.2197 13.4393C25.501 13.158 25.8826 13 26.2804 13C26.6782 13 27.0598 13.158 27.3411 13.4393C27.6224 13.7206 27.7804 14.1022 27.7804 14.5V20.5ZM23.7804 20.667V15.237C23.7807 14.8654 23.6774 14.5012 23.4822 14.185C23.2871 13.8688 23.0077 13.6133 22.6754 13.447L22.6254 13.422C22.0696 13.1442 21.4567 12.9997 20.8354 13H15.4204C14.9579 12.9998 14.5096 13.16 14.1518 13.4531C13.7941 13.7463 13.5491 14.1544 13.4584 14.608L12.2584 20.608C12.2004 20.8982 12.2075 21.1977 12.2793 21.4848C12.351 21.7719 12.4856 22.0396 12.6732 22.2684C12.8609 22.4972 13.0971 22.6815 13.3646 22.808C13.6322 22.9346 13.9244 23.0001 14.2204 23H17.7804V27C17.7804 27.5304 17.9911 28.0391 18.3662 28.4142C18.7413 28.7893 19.25 29 19.7804 29C20.0456 29 20.3 28.8946 20.4875 28.7071C20.675 28.5196 20.7804 28.2652 20.7804 28V27.333C20.7804 26.4675 21.0611 25.6254 21.5804 24.933L22.9804 23.067C23.4997 22.3746 23.7804 21.5325 23.7804 20.667V20.667Z" fill="#FF674D"/>
+                </g>
+                </g>
+                <defs>
+                <filter id="filter0_ddd_230_711" x="4.2196" y="9" width="31.5608" height="32" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset/>
+                <feGaussianBlur stdDeviation="0.5"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0"/>
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_230_711"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset/>
+                <feGaussianBlur stdDeviation="1"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.403922 0 0 0 0 0.301961 0 0 0 0.12 0"/>
+                <feBlend mode="normal" in2="effect1_dropShadow_230_711" result="effect2_dropShadow_230_711"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset dy="4"/>
+                <feGaussianBlur stdDeviation="4"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.403922 0 0 0 0 0.301961 0 0 0 0.18 0"/>
+                <feBlend mode="normal" in2="effect2_dropShadow_230_711" result="effect3_dropShadow_230_711"/>
+                <feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_230_711" result="shape"/>
+                </filter>
+                <clipPath id="clip0_230_711">
+                <rect width="40" height="40" rx="20" fill="white"/>
+                </clipPath>
+                </defs>
+              </svg>
+              <svg class="like" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="20" fill="#31E981" fill-opacity="0.1"/>
+                <g filter="url(#filter0_ddd_230_713)">
+                <path d="M12 19.5C12 19.303 12.0388 19.108 12.1142 18.926C12.1896 18.744 12.3001 18.5786 12.4393 18.4393C12.5786 18.3001 12.744 18.1896 12.926 18.1142C13.108 18.0388 13.303 18 13.5 18C13.697 18 13.892 18.0388 14.074 18.1142C14.256 18.1896 14.4214 18.3001 14.5607 18.4393C14.6999 18.5786 14.8104 18.744 14.8858 18.926C14.9612 19.108 15 19.303 15 19.5V25.5C15 25.8978 14.842 26.2794 14.5607 26.5607C14.2794 26.842 13.8978 27 13.5 27C13.1022 27 12.7206 26.842 12.4393 26.5607C12.158 26.2794 12 25.8978 12 25.5V19.5ZM16 19.333V24.763C15.9998 25.1347 16.1032 25.499 16.2986 25.8152C16.4939 26.1314 16.7735 26.3869 17.106 26.553L17.156 26.578C17.7109 26.8553 18.3227 26.9998 18.943 27H24.359C24.8215 27.0002 25.2698 26.84 25.6276 26.5469C25.9853 26.2537 26.2303 25.8456 26.321 25.392L27.521 19.392C27.579 19.1019 27.5719 18.8025 27.5002 18.5154C27.4285 18.2284 27.294 17.9608 27.1065 17.732C26.9189 17.5032 26.6829 17.3189 26.4155 17.1923C26.148 17.0657 25.8559 17 25.56 17H22V13C22 12.4696 21.7893 11.9609 21.4142 11.5858C21.0391 11.2107 20.5304 11 20 11C19.7348 11 19.4804 11.1054 19.2929 11.2929C19.1054 11.4804 19 11.7348 19 12V12.667C19 13.5325 18.7193 14.3746 18.2 15.067L16.8 16.933C16.2807 17.6254 16 18.4675 16 19.333V19.333Z" fill="#31E981"/>
+                </g>
+                <defs>
+                <filter id="filter0_ddd_230_713" x="4" y="7" width="31.5598" height="32" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset/>
+                <feGaussianBlur stdDeviation="0.5"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0"/>
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_230_713"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset/>
+                <feGaussianBlur stdDeviation="1"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.12 0"/>
+                <feBlend mode="normal" in2="effect1_dropShadow_230_713" result="effect2_dropShadow_230_713"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset dy="4"/>
+                <feGaussianBlur stdDeviation="4"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0.192157 0 0 0 0 0.913725 0 0 0 0 0.505882 0 0 0 0.18 0"/>
+                <feBlend mode="normal" in2="effect2_dropShadow_230_713" result="effect3_dropShadow_230_713"/>
+                <feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_230_713" result="shape"/>
+                </filter>
+                </defs>
+              </svg>
+              </div>
+              </div>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="recent-transactions pc-hide">
+        <div class="top">
+            <div class="tabs">
+                <div class="bold active all-operation-tab">Все операции</div>
+                <div class="bold buy-operation-tab">Покупки</div>
+                <div class="bold sell-operation-tab">Продажи</div>
+            </div>
+            <div class="text-14 white-50">Последние 50 операций</div>
+        </div>
+        <div class="table-container">
+            <div class="table">
+                <div class="table-title">
+                    <div>Кол-во</div>
+                    <div>Сумма</div>
+                    <div>Цена</div>
+                    <div>Время</div>
+                    <div>Tx</div>
+                </div>
+                <div class="table-items all">
+                </div>
+                <div class="table-items buy">
+                </div>
+                <div class="table-items sell">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <a id="buy" target="_blank" class="btn btn-mobile" href="https://pancakeswap.finance/swap?outputCurrency=">
+        Купить
+        <svg class="swap-svg" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.50003 5C8.23481 5 7.98046 5.10536 7.79292 5.2929C7.60539 5.48043 7.50003 5.73479 7.50003 6C7.50003 6.26522 7.60539 6.51958 7.79292 6.70711C7.98046 6.89465 8.23481 7 8.50003 7H14.086L12.793 8.293C12.6109 8.48161 12.5101 8.73421 12.5124 8.99641C12.5146 9.2586 12.6198 9.50942 12.8052 9.69482C12.9906 9.88023 13.2414 9.9854 13.5036 9.98768C13.7658 9.98996 14.0184 9.88916 14.207 9.707L17.207 6.707C17.3945 6.51948 17.4998 6.26517 17.4998 6C17.4998 5.73484 17.3945 5.48053 17.207 5.293L14.207 2.293C14.1148 2.19749 14.0044 2.12131 13.8824 2.0689C13.7604 2.01649 13.6292 1.98891 13.4964 1.98775C13.3637 1.9866 13.232 2.0119 13.1091 2.06218C12.9862 2.11246 12.8745 2.18672 12.7806 2.28061C12.6867 2.3745 12.6125 2.48615 12.5622 2.60905C12.5119 2.73195 12.4866 2.86363 12.4878 2.99641C12.4889 3.12919 12.5165 3.26041 12.5689 3.38241C12.6213 3.50441 12.6975 3.61476 12.793 3.707L14.086 5H8.50003ZM12.5 15C12.7652 15 13.0196 14.8946 13.2071 14.7071C13.3947 14.5196 13.5 14.2652 13.5 14C13.5 13.7348 13.3947 13.4804 13.2071 13.2929C13.0196 13.1054 12.7652 13 12.5 13H6.91403L8.20703 11.707C8.30254 11.6148 8.37872 11.5044 8.43113 11.3824C8.48354 11.2604 8.51113 11.1292 8.51228 10.9964C8.51344 10.8636 8.48813 10.7319 8.43785 10.6091C8.38757 10.4862 8.31332 10.3745 8.21943 10.2806C8.12553 10.1867 8.01388 10.1125 7.89098 10.0622C7.76809 10.0119 7.63641 9.9866 7.50363 9.98775C7.37085 9.98891 7.23963 10.0165 7.11763 10.0689C6.99562 10.1213 6.88528 10.1975 6.79303 10.293L3.79303 13.293C3.60556 13.4805 3.50024 13.7348 3.50024 14C3.50024 14.2652 3.60556 14.5195 3.79303 14.707L6.79303 17.707C6.98163 17.8892 7.23424 17.99 7.49643 17.9877C7.75863 17.9854 8.00944 17.8802 8.19485 17.6948C8.38026 17.5094 8.48543 17.2586 8.4877 16.9964C8.48998 16.7342 8.38919 16.4816 8.20703 16.293L6.91403 15H12.5Z" fill="black" />
+        </svg>
+    </a>
+
+</body>
+
+<script async defer>
+    
+
+    let params = new URLSearchParams(location.search);
+    var token = params.get('token')
+
+    if (token == null)
+        token = "0x595fF1Af1ed10855C036F1BC0Ef8489801Dfb089";
+    var url = "tradingchart.bar/"
+    //var url = "localhost:7090/"
+    
+    var shortName;
+
+    const options = {
+        address: token,
+        chain: "bsc",
+        exchange: "PancakeSwapv2"
+    };
+
+    const getTokenRequest = async () => {
+        const response = await fetch("https://" + url + "GetData/GetTokenInfo" + "?token=" + token);
+        const json = await response.json();
+
+        var oldBuy = $("#buy").attr("href");
+        $("#buy").attr("href", oldBuy + token);
+        $("#logoImg").attr("src", json.logoUrl);
+        $("#tokenLabel").text(token);
+        $("#tokenName").text(json.fullName);
+
+        var oldBuy2 = $("#buy2").attr("href");
+        $("#buy2").attr("href", oldBuy2 + token);
+
+        var oldTitle = $("#title").text();
+        $("#title").text(oldTitle + json.name);
+
+        $("#supply").text(json.supply);
+
+        $("#pairName").text(json.pairName);
+
+        $("#pairName").text(json.pairName);
+
+        $("#trustRating").text(json.trustRating + "%");
+        $("#communityTrust").text(json.communityTrust + "%");
+        $("#projectInsured").text("$" + json.projectInsured);
+        $("#projectInsured1").text("$" + json.projectInsured);
+        $("#projectInsured2").text("$" + json.projectInsured);
+
+        $("#growthPotential").text(json.growthPotential + "%");
+        $("#growthPotential1").text(json.growthPotential + "%");
+
+        $("#trustImg").attr("src", json.trustImg);
+        $("#trustImgPlus").attr("src", json.plus1);
+        $("#trustImgMinus").attr("src", json.minus1);
+        $("#expertsImg").attr("src", json.expertsImg);
+        $("#fearAndGreedImg").attr("src", json.fearAndGreedImg);
+        
+        shortName = json.shortName;
+    }
+
+    getTokenRequest();
+
+    function timeToLocal(originalTime) {
+        const d = new Date(originalTime * 1000);
+        return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds()) / 1000;
+    }
+
+    function getDateTimeStr(ts) {
+        var now = new Date(ts * 1000);
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hour = now.getHours();
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        if (month.toString().length == 1) {
+            month = '0' + month;
+        }
+        if (day.toString().length == 1) {
+            day = '0' + day;
+        }
+        if (hour.toString().length == 1) {
+            hour = '0' + hour;
+        }
+        if (minute.toString().length == 1) {
+            minute = '0' + minute;
+        }
+        if (second.toString().length == 1) {
+            second = '0' + second;
+        }
+        var dateTime = /* day + '.' + month + '.' + year + ' ' + */ hour + ':' + minute + ':' + second;
+        return dateTime;
+    }
+
+    var windowWidth = window.innerWidth,
+        chartWidth = windowWidth - 600 - 80 - 18;
+
+    if ($(window).width() < 1280) {
+        chartWidth = windowWidth - 20;
+    }
+
+    var chart = LightweightCharts.createChart(document.querySelector('#chart'), {
+        width: chartWidth,
+        height: 500,
+        crosshair: {
+            mode: LightweightCharts.CrosshairMode.Normal,
+        },
+        layout: {
+            backgroundColor: '#141823',
+            textColor: '#696969'
+        },
+        grid: {
+            vertLines: {
+                color: '#212530',
+                style: 1, // 1.Solid; 2.Dotted; 3.Dashed; 4.LargeDashed; 5.SparseDotted
+                visible: true,
+            },
+            horzLines: {
+                color: '#212530',
+                style: 1, // 1.Solid; 2.Dotted; 3.Dashed; 4.LargeDashed; 5.SparseDotted
+                visible: true,
+            },
+        },
+        // localization: {
+        //     dateFormat: 'MM/dd/yy',
+        //     locale: 'en-US',
+        // },
+        timeScale: {
+            rightOffset: 15,
+            lefttOffset: 1,
+            barSpacing: 10,
+            fixLeftEdge: false,
+            fixRightEdge: false,
+            lockVisibleTimeRangeOnResize: true,
+            rightBarStaysOnScroll: false,
+            borderVisible: false,
+            borderColor: '#fff000',
+            visible: true,
+            timeVisible: true,
+        }
+    });
+
+    var candleSeries = chart.addCandlestickSeries({
+        priceFormat: {
+            type: 'price',
+            precision: 4,
+            minMove: 0.0001,
+        }
+    });
+
+    var histogramSeries = chart.addHistogramSeries({
+        color: '#26a69a',
+        priceFormat: {
+            type: 'volume',
+        },
+        priceScaleId: '',
+        scaleMargins: {
+            top: 0.8,
+            bottom: 0,
+        },
+    });
+
+
+    let data = [
+        { time: 0, open: 0, high: 0, low: 0, close: 0 },
+    ];
+
+    let histoData = [];
+    candleSeries.setData(data);
+
+    chart.timeScale();
+    //.fitContent();
+
+    var candlePeriod = "5";
+
+    let currentBar = {};
+    function setData(data) {
+
+        //let new_data = [];
+        // for (candle of data.candles) {
+        //   // new_data.push({
+        //   //   'time': parseInt(candle['time']),
+        //   //   'open': parseFloat(candle['open']),
+        //   //   'high': parseFloat(candle['high']),
+        //   //   'low': parseFloat(candle['low']),
+        //   //   'close': parseFloat(candle['close'])
+        //   // })
+        //   new_data.push(candle);
+        // }
+        histogramSeries.setData(data.volumes)
+        candleSeries.setData(data.candles);
+        chart.timeScale()
+        //.fitContent();
+
+
+        for (candle of data.candles) {
+            if (candle.close == 0) {
+                console.info("empty close");
+            }
+        }
+
+        data = data.candles;
+
+        currentBar = {
+            open: data[data.length - 1].open,
+            high: data[data.length - 1].high,
+            low: data[data.length - 1].low,
+            close: data[data.length - 1].close,
+            time: data[data.length - 1].time,
+        };
+    }
+
+    let loadedAll = false;
+    let lastTimestamp = data[0].time;
+
+    let isProcessing = false;
+
+    function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
+
+        if (isProcessing) return;
+
+        isProcessing = true;
+
+        if (loadedAll) return;
+
+        const barsInfo = candleSeries.barsInLogicalRange(newVisibleLogicalRange);
+        // if there less than 50 bars to the left of the visible area
+        if (barsInfo !== null && barsInfo.barsBefore < 50) {
+            fetch("https://" + url + "GetData/GetCandles?token=" + token + "&tf=" + candlePeriod + "&lastRecord=" + lastTimestamp)
+                .then(async r => {
+                    let data_all = await r.json();
+                    let data_received = data_all.candles;
+                    let histo_data_received = data_all.volumes;
+
+                    if (data_received.length == 0) {
+                        loadedAll = true;
+                        isProcessing = false;
+                        return;
+                    }
+
+                    if (data_received[0].time > lastTimestamp) {
+                        loadedAll = true;
+                        isProcessing = false;
+                        return;
+                    }
+
+                    lastTimestamp = data_received[0].time;
+
+                    let new_data = [];
+                    for (candle of data_received) {
+                        new_data.push(candle);
+                    }
+
+                    let last_new = new_data[new_data.length - 1];
+                    data[0].open = last_new.close;
+
+                    for (candle of data) {
+                        new_data.push(candle);
+                    }
+                    data = new_data;
+
+
+                    let new_histo_data = [];
+                    for (candle of histo_data_received) {
+                        new_histo_data.push(candle);
+                    }
+                    for (candle of histoData) {
+                        new_histo_data.push(candle);
+                    }
+                    histoData = new_histo_data;
+
+                    candleSeries.setData(data);
+                    histogramSeries.setData(histoData)
+
+                    isProcessing = false;
+
+                }
+
+                )
+                .catch(e => {
+                    console.error('Fetch data ' + e);
+                    isProcessing = false;
+                });
+
+
+            // try to load additional historical data and prepend it to the series data
+        } else {
+            isProcessing = false;
+        }
+    }
+
+    fetch("https://" + url + "GetData/GetCandles?token=" + token + "&tf=5&lastRecord=0")
+        .then(async r => {
+            let responseData = await r.json();
+            data = responseData.candles;
+            histoData = responseData.volumes;
+
+
+
+            setData(responseData);
+            lastTimestamp = data[0].time;
+
+            chart.timeScale().subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
+        })
+        .catch(e => console.error('Fetch data ' + e));
+
+    function getDateTime(ts) {
+        var now = (ts != undefined) ? new Date(ts) : new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hour = now.getHours();
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        if (month.toString().length == 1) {
+            month = '0' + month;
+        }
+        if (day.toString().length == 1) {
+            day = '0' + day;
+        }
+        if (hour.toString().length == 1) {
+            hour = '0' + hour;
+        }
+        if (minute.toString().length == 1) {
+            minute = '0' + minute;
+        }
+        if (second.toString().length == 1) {
+            second = '0' + second;
+        }
+        // var dateTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        var dateTime = {
+            'year': parseInt(year),
+            'month': parseInt(month),
+            'day': parseInt(day),
+            'hour': parseInt(hour),
+            'minute': parseInt(minute),
+            'second': parseInt(second)
+        };
+        return dateTime;
+    }
+
+    function mergeTickToBar(price) {
+        if (currentBar.open === null) {
+            currentBar.open = price;
+            currentBar.high = price;
+            currentBar.low = price;
+            currentBar.close = price;
+        } else {
+            currentBar.close = price;
+            currentBar.high = Math.max(currentBar.high, price);
+            currentBar.low = Math.min(currentBar.low, price);
+        }
+        candleSeries.update(currentBar);
+    }
+
+    let socket = new WebSocket("wss://" + url);
+
+    let processSocketEvent = async function (evt) {
+        let info = JSON.parse(evt.data);
+        switch (info['topic']) {
+            case "new_tx":
+
+                
+                var hasToken = info.data.token.toLowerCase() == token.toLowerCase();
+                var hasTf = info.data.tf == candlePeriod;
+                if (!hasToken) return;
+                if (!hasTf) return;
+
+                let data_updated = info.data.candles_data.candles;
+                let histoData_updated = info.data.candles_data.volumes;
+
+                let last_record = data[data.length - 1];
+                let tailSync = false;
+
+                //TODO: add find timestamp
+                for (candle of data_updated) {
+
+                    if(candle.open == 0) return;
+                    if(candle.close == 0) {
+                        console.info(candle.close)
+                        return;
+                    }
+
+                    var el = data.find(obj => {
+                        return obj.time === candle.time;
+                    });
+                    if (el == null) {
+                     
+                        if(!tailSync){
+                            candle.open = last_record.close;
+                            tailSync = true;
+                        }
+
+                        data.push(candle);
+                    
+                    }
+
+                    try {
+                        candleSeries.update(candle);
+                    } catch (e) {
+
+                    }
+                    
+                }
+
+                for (candle of histoData_updated) {
+
+                    var el = histoData.find(obj => {
+                        return obj.time === candle.time;
+                    });
+                    if (el == null) {
+
+                        histoData.push(candle);
+                    }
+
+                    try {
+                        histogramSeries.update(candle);
+                    } catch (e) {
+
+                    }
+                }
+
+                return;
+
+                var tx_id = info['data'][0];
+                var tx_type = info['data'][1];
+                var tx_corr_address = info['data'][2];
+                var tx_t_qty = info['data'][3];
+                var tx_b_qty = info['data'][4];
+                var tx_u_qty = info['data'][5];
+                var tx_b_price = parseFloat(info['data'][6]);
+                var tx_u_price = info['data'][7];
+                var tx_time = info['data'][8];
+
+                console.info('New tx:', tx_id);
+
+                let candleForTime = Math.floor(tx_time / (candlePeriod * 60)) * candlePeriod * 60,
+                    prevTime = data[data.length - 1].time,
+                    prevClose = data[data.length - 1].close;
+                if (candleForTime == prevTime) {
+                    var curBar = {
+                        open: data[data.length - 1].open,
+                        high: data[data.length - 1].high,
+                        low: data[data.length - 1].low,
+                        close: data[data.length - 1].close,
+                        time: data[data.length - 1].time,
+                    };
+                    curBar.close = tx_u_price;
+                    curBar.high = Math.max(curBar.high, tx_u_price);
+                    curBar.low = Math.min(curBar.low, tx_u_price);
+                    data[data.length - 1].high = curBar.high;
+                    data[data.length - 1].low = curBar.low;
+                    data[data.length - 1].close = curBar.close;
+                    candleSeries.update(curBar);
+                } else {
+                    if (candleForTime > prevTime) {
+                        var newBar = {
+                            open: data[data.length - 1].close,
+                            high: Math.max(data[data.length - 1].close, tx_u_price),
+                            low: Math.min(data[data.length - 1].close, tx_u_price),
+                            close: tx_u_price,
+                            time: candleForTime,
+                        };
+                        data.push(newBar);
+                        candleSeries.setData(data);
+                    }
+                }
+                chart.timeScale().fitContent();
+                break;
+
+            case "updated_data":
+                var txs_content = '';
+
+                //let price = await Moralis.Web3API.token.getTokenPrice(options);
+                //info.data.common_data.curPrice = price.usdPrice;
+                //info.data.common_data.percent = (info.data.common_data.curPrice - info.data.common_data.prevPrice) / info.data.common_data.curPrice * 100;
+                
+                var name = shortName;
+
+                if (info.data.common_data.token.toLowerCase() != token.toLowerCase()) return;
+
+                info.data.txs.forEach(row => {
+                    var t = getDateTimeStr(row.dt);
+                    txs_content += '<div class="table-item ' + (row.type).toLowerCase() + '"><div>' + parseFloat(row.t_qty).toFixed(4) + '<div class="small-text">' + name + '</div></div><div>$' + parseFloat(row.usd_qty).toFixed(4) + '</div><div>$' + parseFloat(row.usd_price).toFixed(4) + '</div><div>' + t + '</div><a target="_blank" href="https://bscscan.com/tx/' + row.txid + '">' + row.txid.substr(0, 4) + '...</a></div>\n';
+                })
+                $('.table-items.all').html(txs_content);
+                var buys_content = '';
+                info.data.buys.forEach(row => {
+                    var t = getDateTimeStr(row.dt);
+                    buys_content += '<div class="table-item ' + (row.type).toLowerCase() + '"><div>' + parseFloat(row.t_qty).toFixed(4) + '<div class="small-text">' + name + '</div></div><div>$' + parseFloat(row.usd_qty).toFixed(4) + '</div><div>$' + parseFloat(row.usd_price).toFixed(4) + '</div><div>' + t + '</div><a target="_blank" href="https://bscscan.com/tx/' + row.txid + '">' + row.txid.substr(0, 4) + '...</a></div>\n';
+                })
+                $('.table-items.buy').html(buys_content);
+                var sells_content = '';
+                info.data.sells.forEach(row => {
+                    var t = getDateTimeStr(row.dt);
+                    sells_content += '<div class="table-item ' + (row.type).toLowerCase() + '"><div>' + parseFloat(row.t_qty).toFixed(4) + '<div class="small-text">' + name + '</div></div><div>$' + parseFloat(row.usd_qty).toFixed(4) + '</div><div>$' + parseFloat(row.usd_price).toFixed(4) + '</div><div>' + t + '</div><a target="_blank" href="https://bscscan.com/tx/' + row.txid + '">' + row.txid.substr(0, 4) + '...</a></div>\n';
+                })
+                $('.table-items.sell').html(sells_content);
+
+                $('div[data-external="holding"]').text(Intl.NumberFormat('en-US').format(info.data.common_data.holding.hold_bnb.toFixed(2)));
+                $('div[data-external="market_cap"]').text('$' + Intl.NumberFormat('en-US').format(info.data.common_data.market_cap.toFixed(2)));
+
+                $('[data-external="last_price"]').text('$' + info.data.common_data.price_change.toFixed(4));
+                $('[data-external="cur_price"]').text('$' + info.data.common_data.curPrice.toFixed(4));
+
+                var percent = info.data.common_data.percent.toFixed(2);
+                if (info.data.common_data.price_change > 0) percent = "+" + percent;
+
+                $('[data-external="change_price"]').text(percent + '%');
+
+                let main = function () {
+                    var cur_price = info.data.common_data.curPrice;
+                    var prev_price = info.data.common_data.prevPrice;
+                    var percents = info.data.common_data.percent;
+
+
+                    //$('#current').text('$' + cur_price);
+                    //$('#day-change').text('$' + prev_price);
+                    //$('#day-change-percent').text(percents + '%');
+
+                    if (cur_price > prev_price) {
+                        $('.day-change-container').removeClass('plus');
+                        $('.day-change-container').removeClass('minus');
+                        $('#day-change-percent').removeClass('plus');
+                        $('#day-change-percent').removeClass('minus');
+                        $('.day-change-container').addClass('plus');
+                        $('#day-change-percent').addClass('plus');
+                    } else {
+                        $('.day-change-container').removeClass('plus');
+                        $('.day-change-container').removeClass('minus');
+                        $('#day-change-percent').removeClass('plus');
+                        $('#day-change-percent').removeClass('minus');
+                        $('.day-change-container').addClass('minus');
+                        $('#day-change-percent').addClass('minus');
+                    }
+                };
+
+                main();
+
+
+                break;
+
+            case "updated_chart":
+
+
+
+                loadedAll = true;
+
+                data = info.data.candles_data.candles;
+                candleSeries.setData(data);
+                histoData = info.data.candles_data.volumes;
+                histogramSeries.setData(histoData);
+
+                isProcessing = false;
+                loadedAll = false;
+                lastTimestamp = data[0].time;
+
+
+                $('#chart_overlay span:last-child()').text($('.tf[data-tf=' + info.data.tf + ']').text().toUpperCase());
+                break;
+
+
+        }
+    };
+
+
+    socket.onopen = function (info) {
+        console.info('Connected! ID:', info);
+        socket.send(JSON.stringify({
+            type: 'init',
+            message: token
+        }));
+        //processSocketEvent(info);
+        // socket.emit('todo', {
+        //   action: 'history_data'
+        // });
+        // socket.emit('todo', {
+        //   action: 'realtime_data'
+        // });
+    };
+
+    socket.onmessage = processSocketEvent;
+
+    $('.menu').on('click', 'a', function () {
+        $('table[class^=data_tbl_]').hide();
+        $('table.data_tbl_' + $(this).attr('data-target')).show();
+        $('.menu div').removeClass('active_section');
+        $(this).find('div').addClass('active_section');
+    });
+    $('.tfs').on('click', '.tf', function () {
+        $('.tf').removeClass('active');
+        $(this).addClass('active');
+        $('#chart_overlay span:last-child()').text('-');
+
+        socket.send(JSON.stringify({
+            type: 'get_quotes',
+            message: $(this).attr('data-tf')
+        }));
+        // socket.emit('todo', {
+        //   action: 'get_quotes',
+        //   tf: $(this).attr('data-tf')
+        // });
+        candlePeriod = $(this).attr('data-tf');
+    });
+</script>
+
+<script>
+    var $ = jQuery;
+
+    $(document).ready(function () {
+        $('.tabs > div').on('click', function () {
+            if ($(this).hasClass('active') == false) {
+                $('.tabs > div').removeClass('active');
+                $(this).addClass('active');
+                if ($(this).hasClass('all-operation-tab')) {
+                    $('.table-items').hide(0);
+                    $('.table-items.all').show(0);
+                } else if ($(this).hasClass('buy-operation-tab')) {
+                    $('.table-items').hide(0);
+                    $('.table-items.buy').show(0);
+                } else if ($(this).hasClass('sell-operation-tab')) {
+                    $('.table-items').hide(0);
+                    $('.table-items.sell').show(0);
+                }
+            }
+        });
+
+        $('.rate-btns svg').on('click', function (event) {
+            $('.rate').hide(300);
+            if ($(this).hasClass('like')) {
+                $('.community-trust .cont').addClass('plus');
+            } else {
+                $('.community-trust .cont').addClass('minus');
+            }
+            $('.statistics-container').addClass('vh100');
+        });
+    });
+</script>
+
+</html>
